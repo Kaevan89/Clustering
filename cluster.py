@@ -8,8 +8,8 @@ class Cluster():
 
     def __init__(self, data: np.ndarray, centers: np.ndarray):
         '''
-        Main constructor of cluster class with random init centers
-
+        Main constructor of cluster class with random init center
+        
         :param data: ndarray, the data set to be clustered
         :param centers: ndarray, centers of Clusters
         '''
@@ -20,8 +20,8 @@ class Cluster():
     @staticmethod
     def dist(point_1: np.ndarray, point_2: np.ndarray) -> np.ndarray:
         '''
-        Method to calc the square euclidean distance
-
+        Method to calc the square euclidean distanc
+        
         :param point_1: ndarray with shape (n, m) that contains first points
         :param point_2: ndarray with shape (n, m) that contains second points
         :return: ndarray with shape (n, ) of euclidean distances
@@ -31,7 +31,7 @@ class Cluster():
     def set_centers(self, centers: np.ndarray):
         '''
         Change the centers values
-
+        
         :param centers: ndarray new centers values gives by develop
         '''
         if self.centers.shape[1] != centers.shape[1]:
