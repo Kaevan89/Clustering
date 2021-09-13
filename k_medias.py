@@ -37,8 +37,8 @@ class KCluster(Cluster):
         for _ in range(iterations):
             all_distances = self._calc_dist_matrix()
             group_matrix = self._calc_group_matrix(all_distances)
-            self.centers = (group_matrix @ self.data) * (1 / (np.sum(group_matrix, axis=1) + 1E-9).reshape(-1, 1))
-            if (group_matrix == old_group_matrix).all():
+            self.centers = (group_matrix @ self.data) / np.sum(group_matrix, axis=1, keepdims=True)
+            if np.array_equal(group_matrix, old_group_matrix):
                 break
             old_group_matrix = group_matrix
 

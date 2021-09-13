@@ -26,7 +26,7 @@ class Cluster():
         :param point_2: ndarray with shape (n, m) that contains second points
         :return: ndarray with shape (n, ) of euclidean distances
         '''
-        return np.sum((point_1 - point_2) ** 2)
+        return np.sum(np.square(point_1 - point_2))
 
     def set_centers(self, centers: np.ndarray):
         '''

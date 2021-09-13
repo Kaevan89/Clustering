@@ -22,6 +22,7 @@ class FuzzyCluster(Cluster):
             np.random.seed(seed)
         super().__init__(data, np.random.rand(centers_number, data.shape[1]))
         self.m = m
+        self.membership_values = None
 
     def _calc_membership(self, point, center):
         return 1 / (np.sum([self.dist(point, center) /
@@ -47,13 +48,16 @@ class FuzzyCluster(Cluster):
                 break
             self.centers = new_centers
 
-    def calc_membership_values(self) -> np.ndarray:
+    def calc_membership_values(self, return_values: bool=True) -> np.ndarray:
         '''
         Method to calc the membership values
 
+        :param return_values: bool, by default True, set it in false if you don't want keep values.
         :return: ndarray with membership values
         '''
-        return np.array([[self._calc_membership(x, v) for v in self.centers] for x in self.data])
+        self.membership_values = np.array([[self._calc_membership(x, v) for v in self.centers] for x in self.data])
+        if return_values:
+            return self.membership_values
 
     def classify(self) -> np.ndarray:
         '''
@@ -63,3 +67,30 @@ class FuzzyCluster(Cluster):
         '''
         self.labels = np.argmax(self.calc_membership_values(), axis=1)
         return self.labels
+
+    def calc_PC(self):
+        '''
+        Method to calc the partition coefficient defined by Bezdek
+        '''
+        if self.membership_values is None:
+           self.calc_membership_values(False)
+        return np.sum(np.square(self.membership_values)) / self.data.shape[0]
+
+    def calc_CE(self):
+        '''
+        Method to calculate the lack of fuzivity of the groups
+        '''
+        if self.membership_values is None:
+           self.calc_membership_values(False)
+        return -np.sum(self.membership_values * np.log10(self.membership_values)) / self.data.shape[0]
+
+    def calc_I(self):
+        '''
+        Doc
+        '''
+        if self.membership_values is None:
+            self.calc_membership_values(False)
+        max_values = np.max(self.membership_values, axis=1, keepdims=True)
+        lambda_i = max_values - self.membership_values
+        C = self.m - 1
+        return np.sum(lambda_i * np.exp(lambda_i), axis=1) / (C * max_values * np.exp(max_values)).reshape(-1)
