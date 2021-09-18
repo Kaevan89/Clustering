@@ -71,7 +71,7 @@ class Cluster:
         """
         Method to get SSW, TSS and SSB
 
-        :return: JSON with SSW, TSS, SSB
+        :return: dict with SSW, TSS, SSB    
         """
         SSW = self.calc_SSW()
         TSS = self.calc_TSS()
