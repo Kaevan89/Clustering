@@ -44,10 +44,9 @@ class FuzzyCluster(Cluster):
         """
         for _ in range(iterations):
             new_centers = self._calc_new_centers()
-            if np.allclose((self.centers, new_centers), error):
-                self.centers = new_centers
-                break
             self.centers = new_centers
+            if np.allclose((self.centers, new_centers), error):
+                break
 
     def calc_membership_values(self, return_values: bool = True) -> np.ndarray:
         """
