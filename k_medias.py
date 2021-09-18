@@ -5,14 +5,14 @@ from cluster import Cluster
 
 class KCluster(Cluster):
 
-    def __init__(self, data: np.ndarray, centers_number: int, seed: int=None):
-        '''
+    def __init__(self, data: np.ndarray, centers_number: int, seed: int = None):
+        """
         Main constructor of KCluster class with random init centers
 
         :param data: ndarray, the data set to be clustered
         :param centers_number: int, number of classes wished
         :param seed: int number, set the random seed for reproducibility
-        '''
+        """
         if seed is not None:
             random.seed(seed)
         super().__init__(data, data[tuple([random.sample(range(data.shape[0]), centers_number)])])
@@ -27,12 +27,12 @@ class KCluster(Cluster):
             group_matrix[point_class, point] = 1
         return np.array(group_matrix)
 
-    def calc_centers(self, iterations: int=100):
-        '''
+    def calc_centers(self, iterations: int = 100):
+        """
         Fit method, update the centers using K Medias method
 
         :param iterations: int, number to set the max number of iterations
-        '''
+        """
         old_group_matrix = np.zeros((self.centers.shape[0], self.data.shape[0]), dtype=int)
         for _ in range(iterations):
             all_distances = self._calc_dist_matrix()
@@ -43,11 +43,11 @@ class KCluster(Cluster):
             old_group_matrix = group_matrix
 
     def classify(self) -> np.ndarray:
-        '''
+        """
         Method to get the classification
 
         :return: ndarry that contains the class of every point
-        '''
+        """
         all_distances = self._calc_dist_matrix()
         group_matrix = self._calc_group_matrix(all_distances).T
         self.labels = np.array([pertinence.nonzero()[0].item() for pertinence in group_matrix])
