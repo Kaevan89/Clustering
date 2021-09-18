@@ -46,7 +46,7 @@ class KCluster(Cluster):
         """
         Method to get the classification
 
-        :return: ndarry that contains the class of every point
+        :return: ndarray that contains the class of every point
         """
         all_distances = self._calc_dist_matrix()
         group_matrix = self._calc_group_matrix(all_distances).T
